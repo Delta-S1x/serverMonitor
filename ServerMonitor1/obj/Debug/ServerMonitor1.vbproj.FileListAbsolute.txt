@@ -1,0 +1,11 @@
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\bin\Debug\ServerMonitor1.exe.config
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\bin\Debug\ServerMonitor1.exe
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\bin\Debug\ServerMonitor1.pdb
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\bin\Debug\ServerMonitor1.xml
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.vbprojAssemblyReference.cache
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.Form1.resources
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.Resources.resources
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.vbproj.GenerateResource.cache
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.exe
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.xml
+C:\Users\dusti\source\repos\ServerMonitor1\ServerMonitor1\obj\Debug\ServerMonitor1.pdb
