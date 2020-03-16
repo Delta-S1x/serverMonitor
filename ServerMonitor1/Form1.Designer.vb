@@ -33,6 +33,7 @@ Partial Class Form1
         Me.add = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'startbtn
@@ -116,25 +117,36 @@ Partial Class Form1
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.SystemColors.Control
-        Me.Panel1.Location = New System.Drawing.Point(450, 90)
+        Me.Panel1.Location = New System.Drawing.Point(12, 90)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(21, 20)
         Me.Panel1.TabIndex = 18
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(457, 1)
+        Me.Button1.Location = New System.Drawing.Point(253, 25)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(117, 23)
         Me.Button1.TabIndex = 19
         Me.Button1.Text = "SMTP Settings"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(450, 93)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(80, 17)
+        Me.CheckBox1.TabIndex = 21
+        Me.CheckBox1.Text = "Email Alerts"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(586, 213)
+        Me.ClientSize = New System.Drawing.Size(541, 213)
+        Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.add)
@@ -164,4 +176,5 @@ Partial Class Form1
     Friend WithEvents add As Button
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Button1 As Button
+    Friend WithEvents CheckBox1 As CheckBox
 End Class

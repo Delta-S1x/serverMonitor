@@ -7,6 +7,7 @@ Public Class Form1
     Dim MyServerNameList As List(Of Control)
     Dim MyServerAddressList As List(Of Control)
     Dim MyPanelList As List(Of Control)
+    Dim MyCheckBoxList As List(Of Control)
     Dim last
 
 
@@ -93,6 +94,7 @@ Public Class Form1
         MyServerAddressList = New List(Of Control)
         MyServerNameList = New List(Of Control)
         MyPanelList = New List(Of Control)
+        MyCheckBoxList = New List(Of Control)
         mythread = New Thread(AddressOf Pinger)
         mythread.IsBackground = True
         mythread.Start()
@@ -115,6 +117,9 @@ Public Class Form1
             MyPanelList.RemoveAt(MyPanelList.Count - 1)
             last.Dispose()
 
+            last = MyCheckBoxList.Last()
+            MyCheckBoxList.RemoveAt(MyCheckBoxList.Count - 1)
+            last.Dispose()
 
             ServernameHeight -= 30
             add.Top -= 30
@@ -131,9 +136,11 @@ Public Class Form1
         Dim NewTB As New TextBox
         Dim NewTB2 As New TextBox
         Dim NewPanel As New Panel
+        Dim NewCheckBox As New CheckBox
         NewTB = New TextBox
         NewTB2 = New TextBox
         NewPanel = New Panel
+        NewCheckBox = New CheckBox
 
         MyServerAddressList.Add(NewTB2)
         NewTB2.Left = (ServerAddress.Location.X)
@@ -150,6 +157,10 @@ Public Class Form1
         NewPanel.Top = Panel1.Location.Y + ServernameHeight
         NewPanel.Size = Panel1.Size
 
+        MyCheckBoxList.Add(NewCheckBox)
+        NewCheckBox.Left = (CheckBox1.Location.X)
+        NewCheckBox.Top = CheckBox1.Location.Y + ServernameHeight
+        NewCheckBox.Text = "Email Alerts"
 
         add.Top += 30
         minus.Top += 30
@@ -159,9 +170,15 @@ Public Class Form1
         Me.Controls.Add(NewTB)
         Me.Controls.Add(NewTB2)
         Me.Controls.Add(NewPanel)
+        Me.Controls.Add(NewCheckBox)
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
+        Form2.Show()
+
+    End Sub
+
+    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs)
 
     End Sub
 End Class
