@@ -31,6 +31,8 @@ Partial Class Form1
         Me.Email = New System.Windows.Forms.TextBox()
         Me.minus = New System.Windows.Forms.Button()
         Me.add = New System.Windows.Forms.Button()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'startbtn
@@ -111,11 +113,30 @@ Partial Class Form1
         Me.add.Text = "+"
         Me.add.UseVisualStyleBackColor = True
         '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.SystemColors.Control
+        Me.Panel1.Location = New System.Drawing.Point(450, 90)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(21, 20)
+        Me.Panel1.TabIndex = 18
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(457, 1)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(117, 23)
+        Me.Button1.TabIndex = 19
+        Me.Button1.Text = "SMTP Settings"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(586, 213)
+        Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.add)
         Me.Controls.Add(Me.minus)
         Me.Controls.Add(Me.startbtn)
@@ -141,4 +162,6 @@ Partial Class Form1
     Friend WithEvents Email As TextBox
     Friend WithEvents minus As Button
     Friend WithEvents add As Button
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents Button1 As Button
 End Class
