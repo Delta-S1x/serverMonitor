@@ -11,7 +11,9 @@ Public Class Form1
     Dim last
     Private WithEvents NotifyIcon1 As NotifyIcon
     Private mypopupthread As Thread
+    Private mypopupthread2 As Thread
     Dim dead As Integer
+    Dim CurrentServerAddress
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles startbtn.Click
         If startbtn.Text = "Start" Then
             startbtn.Text = "Stop"
@@ -77,6 +79,14 @@ Public Class Form1
                         Catch
                             thispanel.BackColor = Color.FromArgb(255, 0, 0)
                             Threading.Thread.Sleep(3000)
+
+                            If dead = 1 Then
+                                CurrentServerAddress = tb
+                                mypopupthread2 = New Thread(AddressOf Popupboxsubmain2)
+                                mypopupthread2.IsBackground = True
+                                mypopupthread2.Start()
+
+                            End If
                         End Try
                     Else
                         Dim thispanel = MyPanelList(refrence)
@@ -102,7 +112,13 @@ Public Class Form1
         mypopupthread.Abort()
 
     End Sub
+    Private Sub Popupboxsubmain2()
+        dead = 0
+        MsgBox(ServerName.Text & " " & vbNewLine & CurrentServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
 
+        mypopupthread2.Abort()
+
+    End Sub
 
     Sub Threader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         MyServerAddressList = New List(Of Control)
