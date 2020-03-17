@@ -22,6 +22,7 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.startbtn = New System.Windows.Forms.Button()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.ServerAddress = New System.Windows.Forms.TextBox()
@@ -34,6 +35,7 @@ Partial Class Form1
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.popupbox = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'startbtn
@@ -141,11 +143,22 @@ Partial Class Form1
         Me.CheckBox1.Text = "Email Alerts"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
+        'popupbox
+        '
+        Me.popupbox.AutoSize = True
+        Me.popupbox.Location = New System.Drawing.Point(450, 31)
+        Me.popupbox.Name = "popupbox"
+        Me.popupbox.Size = New System.Drawing.Size(88, 17)
+        Me.popupbox.TabIndex = 22
+        Me.popupbox.Text = "PopUp Alerts"
+        Me.popupbox.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(541, 213)
+        Me.Controls.Add(Me.popupbox)
         Me.Controls.Add(Me.CheckBox1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Panel1)
@@ -158,6 +171,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.ServerName)
         Me.Controls.Add(Me.Email)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "Form1"
         Me.Text = "Server Monitor"
         Me.ResumeLayout(False)
@@ -177,4 +191,5 @@ Partial Class Form1
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Button1 As Button
     Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents popupbox As CheckBox
 End Class

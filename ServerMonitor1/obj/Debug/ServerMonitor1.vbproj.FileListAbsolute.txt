@@ -32,3 +32,16 @@ C:\Users\dusti\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor
 C:\Users\dusti\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.xml
 C:\Users\dusti\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.pdb
 C:\Users\dusti\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.Form2.resources
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\bin\Debug\ServerMonitor1.exe.config
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\bin\Debug\ServerMonitor1.exe
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\bin\Debug\ServerMonitor1.pdb
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\bin\Debug\ServerMonitor1.xml
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.vbprojAssemblyReference.cache
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.Form1.resources
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.Form2.resources
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.Resources.resources
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.vbproj.GenerateResource.cache
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.exe
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.xml
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.pdb
+C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.trayForm.resources

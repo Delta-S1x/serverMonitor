@@ -9,9 +9,9 @@ Public Class Form1
     Dim MyPanelList As List(Of Control)
     Dim MyCheckBoxList As List(Of Control)
     Dim last
-
-
-
+    Private WithEvents NotifyIcon1 As NotifyIcon
+    Private mypopupthread As Thread
+    Dim dead As Integer
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles startbtn.Click
         If startbtn.Text = "Start" Then
             startbtn.Text = "Stop"
@@ -47,11 +47,19 @@ Public Class Form1
                         My.Computer.Network.Ping(ServerAddress.Text)
                         Panel1.BackColor = Color.FromArgb(25, 207, 52)
                         Threading.Thread.Sleep(500)
+                        dead = 1
                     Catch
                         Panel1.BackColor = Color.FromArgb(255, 0, 0)
                         Threading.Thread.Sleep(3000)
-                    End Try
+                        If popupbox.Checked = True Then
+                            If dead = 1 Then
+                                mypopupthread = New Thread(AddressOf Popupboxsubmain)
+                                mypopupthread.IsBackground = True
+                                mypopupthread.Start()
 
+                            End If
+                        End If
+                    End Try
                 End If
 
             End If
@@ -87,14 +95,22 @@ Public Class Form1
         Loop
 
     End Sub
-    Sub ThreadKiller(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Leave
+    Private Sub Popupboxsubmain()
+        dead = 0
+        MsgBox(ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
+
+        mypopupthread.Abort()
 
     End Sub
+
+
     Sub Threader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         MyServerAddressList = New List(Of Control)
         MyServerNameList = New List(Of Control)
         MyPanelList = New List(Of Control)
         MyCheckBoxList = New List(Of Control)
+        NotifyIcon1 = New NotifyIcon
+
         mythread = New Thread(AddressOf Pinger)
         mythread.IsBackground = True
         mythread.Start()
@@ -178,7 +194,37 @@ Public Class Form1
 
     End Sub
 
-    Private Sub RadioButton1_CheckedChanged(sender As Object, e As EventArgs)
+    Private Sub Form1_Resize(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Resize
+        If Me.WindowState = FormWindowState.Minimized Then
+            NotifyIcon1.Visible = True
+            NotifyIcon1.Icon = SystemIcons.Application
+            NotifyIcon1.BalloonTipIcon = ToolTipIcon.Info
+            NotifyIcon1.BalloonTipTitle = "Server Monitor"
+            NotifyIcon1.BalloonTipText = "Running In Background"
+            NotifyIcon1.ShowBalloonTip(50000)
+            Dim icon = Me.Icon
+            NotifyIcon1.Icon = icon
+            Me.Hide()
+            ShowInTaskbar = False
+        End If
+    End Sub
+
+    Private Sub NotifyIcon1_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles NotifyIcon1.DoubleClick
+        Me.Show()
+        ShowInTaskbar = True
+        Me.WindowState = FormWindowState.Normal
+        NotifyIcon1.Visible = False
+    End Sub
+
+    Private Sub NotityIcon1_RightClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles NotifyIcon1.MouseClick
+        If e.Button = MouseButtons.Right Then
+
+            trayForm.Show() 'Shows the Form that is the parent of "traymenu"
+            trayForm.Activate() 'Set the Form to "Active", that means that that will be the "selected" window
+            trayForm.Width = 1 'Set the Form width to 1 pixel, that is needed because later we will set it behind the "traymenu"
+            trayForm.Height = 1
+        End If
 
     End Sub
+
 End Class
