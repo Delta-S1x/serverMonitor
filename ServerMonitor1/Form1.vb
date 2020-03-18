@@ -14,6 +14,10 @@ Public Class Form1
     Private mypopupthread2 As Thread
     Dim dead As Integer
     Dim CurrentServerAddress
+    Dim deadalivelist As New List(Of String)
+    Dim refrence
+
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles startbtn.Click
         If startbtn.Text = "Start" Then
             startbtn.Text = "Stop"
@@ -65,29 +69,48 @@ Public Class Form1
                 End If
 
             End If
-            Dim refrence = 0
+            refrence = 0
+
+
+
+
+
+
             For Each tb As Control In MyServerAddressList.ToList
 
                 If running = True Then
+
                     If tb.Text.Count > 1 Then
                         Dim thispanel = MyPanelList(refrence)
                         Try
                             My.Computer.Network.Ping(tb.Text)
 
                             thispanel.BackColor = Color.FromArgb(25, 207, 52)
-                            Threading.Thread.Sleep(500)
+                            deadalivelist(refrence) = "alive"
+                            Threading.Thread.Sleep(200)
                         Catch
-                            thispanel.BackColor = Color.FromArgb(255, 0, 0)
-                            Threading.Thread.Sleep(3000)
 
-                            If dead = 1 Then
-                                CurrentServerAddress = tb
+                            thispanel.BackColor = Color.FromArgb(255, 0, 0)
+
+
+
+                            CurrentServerAddress = MyServerAddressList(refrence)
+                            If popupbox.Checked = True Then
                                 mypopupthread2 = New Thread(AddressOf Popupboxsubmain2)
                                 mypopupthread2.IsBackground = True
                                 mypopupthread2.Start()
-
+                                Threading.Thread.Sleep(3000)
+                                deadalivelist(refrence) = "dead"
                             End If
                         End Try
+                        For Each word As String In deadalivelist.ToList
+
+                        Next
+
+
+
+
+
                     Else
                         Dim thispanel = MyPanelList(refrence)
                         thispanel.BackColor = Control.DefaultBackColor
@@ -113,10 +136,12 @@ Public Class Form1
 
     End Sub
     Private Sub Popupboxsubmain2()
-        dead = 0
-        MsgBox(ServerName.Text & " " & vbNewLine & CurrentServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
+        If deadalivelist(0) = "alive" Then
+            Dim CurrentServerName = MyServerNameList(refrence)
+            MsgBox(CurrentServerName.Text & " " & vbNewLine & CurrentServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
 
-        mypopupthread2.Abort()
+            mypopupthread2.Abort()
+        End If
 
     End Sub
 
@@ -158,7 +183,10 @@ Public Class Form1
             minus.Top -= 30
             startbtn.Top -= 30
             Me.Height -= 30
+            deadalivelist.RemoveAt(deadalivelist.Count - 1)
         End If
+
+
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles add.Click
@@ -203,6 +231,7 @@ Public Class Form1
         Me.Controls.Add(NewTB2)
         Me.Controls.Add(NewPanel)
         Me.Controls.Add(NewCheckBox)
+        deadalivelist.Add("holder")
     End Sub
 
     Private Sub Button1_Click_1(sender As Object, e As EventArgs) Handles Button1.Click
