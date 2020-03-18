@@ -1,4 +1,6 @@
 ﻿Imports System.Threading
+Imports System.Net.Mail
+
 Public Class Form1
     Dim runtime = True
     Dim running = False
@@ -130,10 +132,30 @@ Public Class Form1
     End Sub
     Private Sub Popupboxsubmain()
         dead = 0
-        MsgBox(ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
+        Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+        MsgBox(downMessage, MsgBoxStyle.ApplicationModal, "Server Monitor")
 
+        If EmailAlerts.Checked = True Then
+            Try
+            Dim SmtpServer As New SmtpClient()
+            Dim mail As New MailMessage()
+            SmtpServer.Credentials = New _
+        Net.NetworkCredential(Form2.SMTPUsername, Form2.SMTPPassword)
+            SmtpServer.Port = Form2.SMTPPort
+            SmtpServer.Host = Form2.SMTPAddress
+
+            mail = New MailMessage()
+            mail.From = New MailAddress(Form2.SMTPUsername)
+            mail.To.Add(Email.Text)
+            mail.Subject = "Server Monitor"
+            mail.Body = downMessage
+            SmtpServer.Send(mail)
+            MsgBox("mail send")
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
         mypopupthread.Abort()
-
+        End If  
     End Sub
     Private Sub Popupboxsubmain2()
         If deadalivelist(0) = "alive" Then
@@ -218,8 +240,8 @@ Public Class Form1
         NewPanel.Size = Panel1.Size
 
         MyCheckBoxList.Add(NewCheckBox)
-        NewCheckBox.Left = (CheckBox1.Location.X)
-        NewCheckBox.Top = CheckBox1.Location.Y + ServernameHeight
+        NewCheckBox.Left = (EmailAlerts.Location.X)
+        NewCheckBox.Top = EmailAlerts.Location.Y + ServernameHeight
         NewCheckBox.Text = "Email Alerts"
 
         add.Top += 30

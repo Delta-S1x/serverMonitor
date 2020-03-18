@@ -34,7 +34,7 @@ Partial Class Form1
         Me.add = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.EmailAlerts = New System.Windows.Forms.CheckBox()
         Me.popupbox = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
@@ -133,15 +133,15 @@ Partial Class Form1
         Me.Button1.Text = "SMTP Settings"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'EmailAlerts
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(450, 93)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(80, 17)
-        Me.CheckBox1.TabIndex = 21
-        Me.CheckBox1.Text = "Email Alerts"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.EmailAlerts.AutoSize = True
+        Me.EmailAlerts.Location = New System.Drawing.Point(450, 93)
+        Me.EmailAlerts.Name = "EmailAlerts"
+        Me.EmailAlerts.Size = New System.Drawing.Size(80, 17)
+        Me.EmailAlerts.TabIndex = 21
+        Me.EmailAlerts.Text = "Email Alerts"
+        Me.EmailAlerts.UseVisualStyleBackColor = True
         '
         'popupbox
         '
@@ -159,7 +159,7 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(541, 213)
         Me.Controls.Add(Me.popupbox)
-        Me.Controls.Add(Me.CheckBox1)
+        Me.Controls.Add(Me.EmailAlerts)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.add)
@@ -190,6 +190,6 @@ Partial Class Form1
     Friend WithEvents add As Button
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Button1 As Button
-    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents EmailAlerts As CheckBox
     Friend WithEvents popupbox As CheckBox
 End Class
