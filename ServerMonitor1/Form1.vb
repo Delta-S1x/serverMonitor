@@ -138,16 +138,17 @@ Public Class Form1
         If EmailAlerts.Checked = True Then
             Try
             Dim SmtpServer As New SmtpClient()
-            Dim mail As New MailMessage()
-            SmtpServer.Credentials = New _
-        Net.NetworkCredential(Form2.SMTPUsername, Form2.SMTPPassword)
-            SmtpServer.Port = Form2.SMTPPort
-            SmtpServer.Host = Form2.SMTPAddress
+                Dim mail As New MailMessage()
+                SmtpServer.UseDefaultCredentials = False
+                SmtpServer.Credentials = New Net.NetworkCredential("theoriginaldelta6@gmail.com", "dustin92")
+                SmtpServer.EnableSsl = True
+                SmtpServer.Port = 465
+                SmtpServer.Host = "smtp.gmail.com"
 
-            mail = New MailMessage()
-            mail.From = New MailAddress(Form2.SMTPUsername)
-            mail.To.Add(Email.Text)
-            mail.Subject = "Server Monitor"
+                mail = New MailMessage()
+                mail.From = New MailAddress("theoriginaldelta6@gmail.com")
+                mail.To.Add("dustin.williams92@yahoo.com")
+                mail.Subject = "Server Monitor"
             mail.Body = downMessage
             SmtpServer.Send(mail)
             MsgBox("mail send")
