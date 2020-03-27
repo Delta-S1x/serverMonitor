@@ -9,11 +9,13 @@ Public Class Form1
     Dim MyServerNameList As List(Of Control)
     Dim MyServerAddressList As List(Of Control)
     Dim MyPanelList As List(Of Control)
-    Dim MyCheckBoxList As List(Of Control)
+    Dim MyCheckBoxList As List(Of CheckBox)
     Dim last
     Private WithEvents NotifyIcon1 As NotifyIcon
     Private mypopupthread As Thread
     Private mypopupthread2 As Thread
+    Private myemailthreadmain As Thread
+    Private myemailthreaddynamic As Thread
     Dim dead As Integer
     Dim CurrentServerAddress
     Dim deadalivelist As New List(Of String)
@@ -47,6 +49,11 @@ Public Class Form1
         Do While runtime = True
             If running = False Then
                 Panel1.BackColor = Control.DefaultBackColor
+                For Each panel As Control In MyPanelList.ToList
+                    panel.BackColor = Control.DefaultBackColor
+
+                Next
+
             End If
             If running = True Then
                 If ServerAddress.Text.Count > 1 Then
@@ -64,6 +71,8 @@ Public Class Form1
                                 mypopupthread = New Thread(AddressOf Popupboxsubmain)
                                 mypopupthread.IsBackground = True
                                 mypopupthread.Start()
+                                myemailthreadmain = New Thread(AddressOf Emailsenderdynamic)
+                                myemailthreadmain.Start()
 
                             End If
                         End If
@@ -84,6 +93,7 @@ Public Class Form1
 
                     If tb.Text.Count > 1 Then
                         Dim thispanel = MyPanelList(refrence)
+                        Dim thischeckbox = MyCheckBoxList(refrence)
                         Try
                             My.Computer.Network.Ping(tb.Text)
 
@@ -91,18 +101,20 @@ Public Class Form1
                             deadalivelist(refrence) = "alive"
                             Threading.Thread.Sleep(200)
                         Catch
-
                             thispanel.BackColor = Color.FromArgb(255, 0, 0)
-
-
-
                             CurrentServerAddress = MyServerAddressList(refrence)
+
                             If popupbox.Checked = True Then
                                 mypopupthread2 = New Thread(AddressOf Popupboxsubmain2)
                                 mypopupthread2.IsBackground = True
                                 mypopupthread2.Start()
-                                Threading.Thread.Sleep(3000)
                                 deadalivelist(refrence) = "dead"
+                            End If
+                            If thischeckbox.Checked = True Then
+
+                                myemailthreaddynamic = New Thread(AddressOf Emailsenderdynamic)
+                                myemailthreaddynamic.IsBackground = True
+                                myemailthreaddynamic.Start()
                             End If
                         End Try
                         For Each word As String In deadalivelist.ToList
@@ -134,29 +146,57 @@ Public Class Form1
         dead = 0
         Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
         MsgBox(downMessage, MsgBoxStyle.ApplicationModal, "Server Monitor")
+        mypopupthread.Abort()
+    End Sub
 
+    Private Sub Emailsendermain()
         If EmailAlerts.Checked = True Then
             Try
-            Dim SmtpServer As New SmtpClient()
+                Dim SmtpServer As New SmtpClient()
                 Dim mail As New MailMessage()
                 SmtpServer.UseDefaultCredentials = False
                 SmtpServer.Credentials = New Net.NetworkCredential("theoriginaldelta6@gmail.com", "dustin92")
                 SmtpServer.EnableSsl = True
-                SmtpServer.Port = 465
+                SmtpServer.Port = 587
                 SmtpServer.Host = "smtp.gmail.com"
 
                 mail = New MailMessage()
                 mail.From = New MailAddress("theoriginaldelta6@gmail.com")
                 mail.To.Add("dustin.williams92@yahoo.com")
                 mail.Subject = "Server Monitor"
+                Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+                mail.Body = downMessage
+                SmtpServer.Send(mail)
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+            myemailthreadmain.Abort()
+        End If
+    End Sub
+
+    Private Sub Emailsenderdynamic()
+
+        Try
+            Dim downMessage = MyServerNameList(refrence).Text & " " & vbNewLine & MyServerAddressList(refrence).Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+            Dim SmtpServer As New SmtpClient()
+            Dim mail As New MailMessage()
+            SmtpServer.UseDefaultCredentials = False
+            SmtpServer.Credentials = New Net.NetworkCredential("theoriginaldelta6@gmail.com", "dustin92")
+            SmtpServer.EnableSsl = True
+            SmtpServer.Port = 587
+            SmtpServer.Host = "smtp.gmail.com"
+
+            mail = New MailMessage()
+            mail.From = New MailAddress("theoriginaldelta6@gmail.com")
+            mail.To.Add("dustin.williams92@yahoo.com")
+            mail.Subject = "Server Monitor"
             mail.Body = downMessage
             SmtpServer.Send(mail)
-            MsgBox("mail send")
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
-        mypopupthread.Abort()
-        End If  
+        myemailthreaddynamic.Abort()
+
     End Sub
     Private Sub Popupboxsubmain2()
         If deadalivelist(0) = "alive" Then
@@ -172,7 +212,7 @@ Public Class Form1
         MyServerAddressList = New List(Of Control)
         MyServerNameList = New List(Of Control)
         MyPanelList = New List(Of Control)
-        MyCheckBoxList = New List(Of Control)
+        MyCheckBoxList = New List(Of CheckBox)
         NotifyIcon1 = New NotifyIcon
 
         mythread = New Thread(AddressOf Pinger)

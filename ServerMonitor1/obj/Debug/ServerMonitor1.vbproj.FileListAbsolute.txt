@@ -45,3 +45,4 @@ C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMon
 C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.xml
 C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.pdb
 C:\Users\dwilliams\Source\Repos\serverMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.trayForm.resources
+C:\Users\dusti\source\repos\ServerMonitor\ServerMonitor1\obj\Debug\ServerMonitor1.trayForm.resources
