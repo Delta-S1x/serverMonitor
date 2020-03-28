@@ -18,5 +18,7 @@
 
     Private Sub OpenServerMonitorToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenServerMonitorToolStripMenuItem.Click
         Form1.Show()
+        Form1.WindowState = System.Windows.Forms.FormWindowState.Normal
+
     End Sub
 End Class

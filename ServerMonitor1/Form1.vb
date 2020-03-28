@@ -66,31 +66,45 @@ Public Class Form1
                     Catch
                         Panel1.BackColor = Color.FromArgb(255, 0, 0)
                         Threading.Thread.Sleep(3000)
-                        If popupbox.Checked = True Then
-                            If dead = 1 Then
+
+                        If dead = 1 Then
+                            If popupbox.Checked = True Then
+
                                 mypopupthread = New Thread(AddressOf Popupboxsubmain)
                                 mypopupthread.IsBackground = True
                                 mypopupthread.Start()
-                                myemailthreadmain = New Thread(AddressOf Emailsenderdynamic)
+                            End If
+
+                            If EmailAlerts.Checked = True Then
+                                myemailthreadmain = New Thread(AddressOf Emailsendermain)
                                 myemailthreadmain.Start()
+                            End If
+
+                            If Me.WindowState = FormWindowState.Minimized Then
+                                Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+
+                                NotifyIcon1.BalloonTipIcon = ToolTipIcon.Info
+                                NotifyIcon1.BalloonTipTitle = "Server Monitor"
+                                NotifyIcon1.BalloonTipText = downMessage
+                                NotifyIcon1.ShowBalloonTip(5000)
 
                             End If
-                        End If
+
+                            dead = 0
+                            End If
                     End Try
                 End If
 
             End If
+
+
+            'Everything below is for dynamic created objects, The refrence value is the position in dynamically created items that we are currently on
             refrence = 0
-
-
-
-
-
-
             For Each tb As Control In MyServerAddressList.ToList
 
                 If running = True Then
-
+                    Dim thisname = MyServerNameList(refrence).Text
+                    Dim thisaddress = MyServerAddressList(refrence).Text
                     If tb.Text.Count > 1 Then
                         Dim thispanel = MyPanelList(refrence)
                         Dim thischeckbox = MyCheckBoxList(refrence)
@@ -103,26 +117,32 @@ Public Class Form1
                         Catch
                             thispanel.BackColor = Color.FromArgb(255, 0, 0)
                             CurrentServerAddress = MyServerAddressList(refrence)
+                            If deadalivelist(refrence) = "alive" Then
 
-                            If popupbox.Checked = True Then
-                                mypopupthread2 = New Thread(AddressOf Popupboxsubmain2)
-                                mypopupthread2.IsBackground = True
-                                mypopupthread2.Start()
+                                If popupbox.Checked = True Then
+                                    mypopupthread2 = New Thread(Sub() Popupboxsubmain2(thisname, thisaddress))
+                                    mypopupthread2.IsBackground = True
+                                    mypopupthread2.Start()
+                                    deadalivelist(refrence) = "dead"
+                                End If
+                                If thischeckbox.Checked = True Then
+                                    myemailthreaddynamic = New Thread(Sub() Emailsenderdynamic(thisname, thisaddress))
+                                    myemailthreaddynamic.IsBackground = True
+                                    myemailthreaddynamic.Start()
+                                End If
+
+
+                                If Me.WindowState = FormWindowState.Minimized Then
+                                    Dim downMessage = MyServerNameList(refrence).Text & " " & vbNewLine & MyServerAddressList(refrence).Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+                                    NotifyIcon1.BalloonTipIcon = ToolTipIcon.Info
+                                    NotifyIcon1.BalloonTipTitle = "Server Monitor"
+                                    NotifyIcon1.BalloonTipText = downMessage
+                                    NotifyIcon1.ShowBalloonTip(5000)
+                                End If
+
                                 deadalivelist(refrence) = "dead"
                             End If
-                            If thischeckbox.Checked = True Then
-
-                                myemailthreaddynamic = New Thread(AddressOf Emailsenderdynamic)
-                                myemailthreaddynamic.IsBackground = True
-                                myemailthreaddynamic.Start()
-                            End If
                         End Try
-                        For Each word As String In deadalivelist.ToList
-
-                        Next
-
-
-
 
 
                     Else
@@ -143,7 +163,7 @@ Public Class Form1
 
     End Sub
     Private Sub Popupboxsubmain()
-        dead = 0
+
         Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
         MsgBox(downMessage, MsgBoxStyle.ApplicationModal, "Server Monitor")
         mypopupthread.Abort()
@@ -152,17 +172,19 @@ Public Class Form1
     Private Sub Emailsendermain()
         If EmailAlerts.Checked = True Then
             Try
+
                 Dim SmtpServer As New SmtpClient()
                 Dim mail As New MailMessage()
                 SmtpServer.UseDefaultCredentials = False
-                SmtpServer.Credentials = New Net.NetworkCredential("theoriginaldelta6@gmail.com", "dustin92")
+                Dim pass = AES_Decrypt(My.Settings.SMPTPassword, "SZ%58rTb123")
+                SmtpServer.Credentials = New Net.NetworkCredential(My.Settings.SMTPUSername, pass)
                 SmtpServer.EnableSsl = True
-                SmtpServer.Port = 587
-                SmtpServer.Host = "smtp.gmail.com"
+                SmtpServer.Port = My.Settings.SMTPPort
+                SmtpServer.Host = My.Settings.SMTPServer
 
                 mail = New MailMessage()
-                mail.From = New MailAddress("theoriginaldelta6@gmail.com")
-                mail.To.Add("dustin.williams92@yahoo.com")
+                mail.From = New MailAddress(My.Settings.SMTPUSername)
+                mail.To.Add(My.Settings.EmailAddress)
                 mail.Subject = "Server Monitor"
                 Dim downMessage = ServerName.Text & " " & vbNewLine & ServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
                 mail.Body = downMessage
@@ -174,41 +196,39 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub Emailsenderdynamic()
+    Private Sub Emailsenderdynamic(ByVal name As String, ByVal address As String)
 
         Try
-            Dim downMessage = MyServerNameList(refrence).Text & " " & vbNewLine & MyServerAddressList(refrence).Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now
+            Dim downMessage = name & " " & vbNewLine & address & vbNewLine & " Has been disconnected at " & System.DateTime.Now
             Dim SmtpServer As New SmtpClient()
             Dim mail As New MailMessage()
             SmtpServer.UseDefaultCredentials = False
-            SmtpServer.Credentials = New Net.NetworkCredential("theoriginaldelta6@gmail.com", "dustin92")
+            Dim pass = AES_Decrypt(My.Settings.SMPTPassword, "SZ%58rTb123")
+            SmtpServer.Credentials = New Net.NetworkCredential(My.Settings.SMTPUSername, pass)
             SmtpServer.EnableSsl = True
-            SmtpServer.Port = 587
-            SmtpServer.Host = "smtp.gmail.com"
+            SmtpServer.Port = My.Settings.SMTPPort
+            SmtpServer.Host = My.Settings.SMTPServer
 
             mail = New MailMessage()
-            mail.From = New MailAddress("theoriginaldelta6@gmail.com")
-            mail.To.Add("dustin.williams92@yahoo.com")
+            mail.From = New MailAddress(My.Settings.SMTPUSername)
+            mail.To.Add(My.Settings.EmailAddress)
             mail.Subject = "Server Monitor"
             mail.Body = downMessage
             SmtpServer.Send(mail)
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
-        myemailthreaddynamic.Abort()
+        Thread.CurrentThread.Abort()
+
 
     End Sub
-    Private Sub Popupboxsubmain2()
-        If deadalivelist(0) = "alive" Then
-            Dim CurrentServerName = MyServerNameList(refrence)
-            MsgBox(CurrentServerName.Text & " " & vbNewLine & CurrentServerAddress.Text & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
-
-            mypopupthread2.Abort()
-        End If
-
+    Private Sub Popupboxsubmain2(ByVal name As String, ByVal address As String)
+        MsgBox(name & " " & vbNewLine & address & vbNewLine & " Has been disconnected at " & System.DateTime.Now, MsgBoxStyle.ApplicationModal, "Server Monitor")
+        Thread.CurrentThread.Abort()
     End Sub
 
     Sub Threader(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Email.Text = My.Settings.EmailAddress
         MyServerAddressList = New List(Of Control)
         MyServerNameList = New List(Of Control)
         MyPanelList = New List(Of Control)
@@ -309,7 +329,7 @@ Public Class Form1
             NotifyIcon1.BalloonTipIcon = ToolTipIcon.Info
             NotifyIcon1.BalloonTipTitle = "Server Monitor"
             NotifyIcon1.BalloonTipText = "Running In Background"
-            NotifyIcon1.ShowBalloonTip(50000)
+            NotifyIcon1.ShowBalloonTip(5000)
             Dim icon = Me.Icon
             NotifyIcon1.Icon = icon
             Me.Hide()
@@ -334,5 +354,29 @@ Public Class Form1
         End If
 
     End Sub
+
+    Private Sub Email_TextChanged(sender As Object, e As EventArgs) Handles Email.TextChanged
+        My.Settings.EmailAddress = Email.Text
+    End Sub
+
+
+    Public Function AES_Decrypt(ByVal input As String, ByVal pass As String) As String
+        Dim AES As New System.Security.Cryptography.RijndaelManaged
+        Dim Hash_AES As New System.Security.Cryptography.MD5CryptoServiceProvider
+        Dim decrypted As String = ""
+        Try
+            Dim hash(31) As Byte
+            Dim temp As Byte() = Hash_AES.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(pass))
+            Array.Copy(temp, 0, hash, 0, 16)
+            Array.Copy(temp, 0, hash, 15, 16)
+            AES.Key = hash
+            AES.Mode = Security.Cryptography.CipherMode.ECB
+            Dim DESDecrypter As System.Security.Cryptography.ICryptoTransform = AES.CreateDecryptor
+            Dim Buffer As Byte() = Convert.FromBase64String(input)
+            decrypted = System.Text.ASCIIEncoding.ASCII.GetString(DESDecrypter.TransformFinalBlock(Buffer, 0, Buffer.Length))
+            Return decrypted
+        Catch ex As Exception
+        End Try
+    End Function
 
 End Class

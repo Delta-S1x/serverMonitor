@@ -62,7 +62,6 @@ Partial Class Form1
         Me.ServerAddress.Name = "ServerAddress"
         Me.ServerAddress.Size = New System.Drawing.Size(191, 20)
         Me.ServerAddress.TabIndex = 12
-        Me.ServerAddress.Text = "google.com"
         '
         'Label2
         '

@@ -57,9 +57,9 @@ Partial Class Form2
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(24, 74)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(58, 13)
+        Me.Label2.Size = New System.Drawing.Size(76, 13)
         Me.Label2.TabIndex = 3
-        Me.Label2.Text = "Username:"
+        Me.Label2.Text = "Email Address:"
         '
         'SMTPUsernameBox
         '
